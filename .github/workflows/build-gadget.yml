@@ -39,9 +39,9 @@ jobs:
         run: |
           mkdir -p output
           find build/lib/gadget/ -name "*.so" -exec cp {} output/ \;
-          # Rename to remove "frida" from filename
-          cd output && for f in *frida*; do mv "$f" "$(echo $f | sed 's/frida-gadget/libgadget/')"; done 2>/dev/null || true
-          ls -la output/
+          cd output
+          for f in *frida*; do [ -e "$f" ] && mv "$f" "$(echo $f | sed 's/frida-gadget/libgadget/')"; done || true
+          ls -la
 
       - name: Upload Gadget SO
         uses: actions/upload-artifact@v4
