@@ -187,7 +187,7 @@ frida_create_cached_sections (FridaCreateArgs * args)
   cached_sections = g_slice_new0 (FridaDyldUnwindSections);
   cached_sections->mh = header;
 
-  module = gum_darwin_module_new_from_memory ("Frida", mach_task_self (), GPOINTER_TO_SIZE (header), GUM_DARWIN_MODULE_FLAGS_NONE, NULL);
+  module = gum_darwin_module_new_from_memory ("System", mach_task_self (), GPOINTER_TO_SIZE (header), GUM_DARWIN_MODULE_FLAGS_NONE, NULL);
   if (module == NULL)
     return cached_sections;
 

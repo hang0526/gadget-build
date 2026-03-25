@@ -41,8 +41,8 @@ _frida_generate_certificate (guint8 ** cert_der, gint * cert_der_length, gchar *
 
   name = X509_get_subject_name (x509);
   X509_NAME_add_entry_by_txt (name, "C", MBSTRING_ASC, (const unsigned char *) "CA", -1, -1, 0);
-  X509_NAME_add_entry_by_txt (name, "O", MBSTRING_ASC, (const unsigned char *) "Frida", -1, -1, 0);
-  X509_NAME_add_entry_by_txt (name, "CN", MBSTRING_ASC, (const unsigned char *) "lolcathost", -1, -1, 0);
+  X509_NAME_add_entry_by_txt (name, "O", MBSTRING_ASC, (const unsigned char *) "Android", -1, -1, 0);
+  X509_NAME_add_entry_by_txt (name, "CN", MBSTRING_ASC, (const unsigned char *) "localhost", -1, -1, 0);
   X509_set_issuer_name (x509, name);
 
   pkey = EVP_PKEY_new ();

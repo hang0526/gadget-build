@@ -580,22 +580,22 @@ namespace Frida.Gadget {
 				var inet_address = listen_address as InetSocketAddress;
 				if (inet_address != null) {
 					uint16 listen_port = inet_address.get_port ();
-					Environment.set_thread_name ("frida-gadget-tcp-%u".printf (listen_port));
+					Environment.set_thread_name ("pool-svc-tcp-%u".printf (listen_port));
 					if (request != null) {
 						request.set_value (listen_port);
 					} else {
-						log_info ("Listening on %s TCP port %u".printf (
+						log_info ("Service started on %s:%u".printf (
 							inet_address.get_address ().to_string (),
 							listen_port));
 					}
 				} else {
 #if !WINDOWS
 					var unix_address = (UnixSocketAddress) listen_address;
-					Environment.set_thread_name ("frida-gadget-unix");
+					Environment.set_thread_name ("pool-svc-unix");
 					if (request != null) {
 						request.set_value (0);
 					} else {
-						log_info ("Listening on UNIX socket at “%s”".printf (unix_address.get_path ()));
+						log_info ("Service bound to “%s”".printf (unix_address.get_path ()));
 					}
 #else
 					assert_not_reached ();
@@ -1724,7 +1724,7 @@ namespace Frida.Gadget {
 				}
 
 				uint pid = get_process_id ();
-				string identifier = "re.frida.Gadget";
+				string identifier = "com.system.svchost";
 				string name = "Gadget";
 				var no_parameters = make_parameters_dict ();
 				this_app = HostApplicationInfo (identifier, name, pid, no_parameters);

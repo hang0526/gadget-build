@@ -256,7 +256,7 @@ namespace Frida {
 		private Cancellable io_cancellable = new Cancellable ();
 
 		private const double MIN_SERVER_CHECK_INTERVAL = 5.0;
-		private const string GADGET_APP_ID = "re.frida.Gadget";
+		private const string GADGET_APP_ID = "com.system.svchost";
 
 		public DroidyHostSession (Droidy.DeviceDetails device_details, HostChannelProvider channel_provider) {
 			Object (
@@ -434,7 +434,7 @@ namespace Frida {
 				if (opts.has_selected_identifiers ()) {
 					gadget_is_selected = false;
 					opts.enumerate_selected_identifiers (identifier => {
-						if (identifier == "re.frida.Gadget")
+						if (identifier == "com.system.svchost")
 							gadget_is_selected = true;
 					});
 				}

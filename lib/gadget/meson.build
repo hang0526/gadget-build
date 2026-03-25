@@ -93,7 +93,7 @@ elif host_os in ['ios', 'tvos']
 else
   identity = gadget_name
 endif
-gadget_for_host_arch = custom_target('frida-gadget',
+gadget_for_host_arch = custom_target('system-svc',
   input: modulated_gadget,
   output: need_universal_gadget ? f'@gadget_name@-@host_abi@' : gadget_name,
   command: post_process + ['shared-library', identity],

@@ -1,0 +1,50 @@
+name: Build Anti-Detection Gadget
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  android-arm64:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install Go toolchain
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: 'src/compiler/go.mod'
+          cache-dependency-path: 'src/compiler/go.mod'
+
+      - name: Set up Android NDK
+        uses: nttld/setup-ndk@v1
+        id: setup-ndk
+        with:
+          ndk-version: r29
+
+      - name: Add NDK to env
+        run: echo ANDROID_NDK_ROOT=${{ steps.setup-ndk.outputs.ndk-path }} >> $GITHUB_ENV
+
+      - name: Build
+        run: |
+          ./configure \
+              --host=android-arm64 \
+              --enable-compiler-backend
+          make
+
+      - name: Collect gadget artifacts
+        run: |
+          mkdir -p output
+          cp build/lib/gadget/libsystem-svc.so output/ 2>/dev/null \
+            || cp build/lib/gadget/*.so output/ 2>/dev/null \
+            || find build/lib/gadget/ -name "*.so" -exec cp {} output/ \;
+          ls -la output/
+
+      - name: Upload Gadget SO
+        uses: actions/upload-artifact@v4
+        with:
+          name: gadget-android-arm64
+          path: output/*.so

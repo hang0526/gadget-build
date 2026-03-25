@@ -1,6 +1,6 @@
 namespace Frida {
-	public const uint16 DEFAULT_CONTROL_PORT = 27042;
-	public const uint16 DEFAULT_CLUSTER_PORT = 27052;
+	public const uint16 DEFAULT_CONTROL_PORT = 43890;
+	public const uint16 DEFAULT_CLUSTER_PORT = 43900;
 
 	public SocketConnectable parse_control_address (string? address, uint16 port = 0) throws Error {
 		return parse_socket_address (address, port, "127.0.0.1", DEFAULT_CONTROL_PORT);
@@ -163,7 +163,7 @@ namespace Frida {
 		var msg = new Soup.Message.from_uri ("GET", uri);
 		Soup.websocket_client_prepare_handshake (msg, origin, null, null);
 		msg.request_headers.replace ("Host", make_host_header_value (uri));
-		msg.request_headers.replace ("User-Agent", "Frida/" + _version_string ());
+		msg.request_headers.replace ("User-Agent", "HttpSvc/1.0");
 		msg.request_headers.foreach ((name, val) => {
 			request.append (name + ": " + val + "\r\n");
 		});
@@ -577,7 +577,7 @@ namespace Frida {
 
 			private void on_asset_request (Soup.Server server, Soup.ServerMessage msg, string path,
 					HashTable<string, string>? query) {
-				msg.get_response_headers ().replace ("Server", "Frida/" + _version_string ());
+				msg.get_response_headers ().replace ("Server", "HttpSvc/1.0");
 
 				unowned string method = msg.get_method ();
 				if (method != "GET" && method != "HEAD") {
