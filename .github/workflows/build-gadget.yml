@@ -38,9 +38,9 @@ jobs:
       - name: Collect gadget artifacts
         run: |
           mkdir -p output
-          cp build/lib/gadget/libsystem-svc.so output/ 2>/dev/null \
-            || cp build/lib/gadget/*.so output/ 2>/dev/null \
-            || find build/lib/gadget/ -name "*.so" -exec cp {} output/ \;
+          find build/lib/gadget/ -name "*.so" -exec cp {} output/ \;
+          # Rename to remove "frida" from filename
+          cd output && for f in *frida*; do mv "$f" "$(echo $f | sed 's/frida-gadget/libgadget/')"; done 2>/dev/null || true
           ls -la output/
 
       - name: Upload Gadget SO
